@@ -8,7 +8,7 @@ from tornado.web import Application, RequestHandler
 
 TOP_SYMBOLS = ['BAC', 'SPY', 'IWM', 'EEM','AAPL', 'MSFT', 'TLT', 'DXJ', 'NS', 'XLF', 'SLV', 'FB', 'QQQ', 'GPOR', 'XOP']
 
-class TopSymbolHandler(RequestHandler):
+class TopSymbolService:
     def get_quotes(self):
         url = 'http://finance.yahoo.com/d/quotes.csv?s='
         for symbol in TOP_SYMBOLS:
@@ -23,12 +23,16 @@ class TopSymbolHandler(RequestHandler):
         for string in split_strings:
             s = string.split(',')
             results[s[0]] = s[1:]
-        for key in results:
+        print json.dumps(results)
+        return json.dumps(results)   
 
-
+class TopSymbolHandler(RequestHandler):
+    service = TopSymbolService()
+    
     def get(self):
-        results = self.get_quotes()
-        self.render('search.html', results=results)
+        results = self.service.get_quotes()
+        result_keys = results.keys()
+        self.render('index.html', result_keys=result_keys)
 
 settings = { 'static_path' : './static/' }
 
