@@ -31,7 +31,6 @@ class TopSymbolHandler(RequestHandler):
     
     def get(self):
         results = self.service.get_quotes()
-        result_keys = results.keys()
         self.render('index.html', result_keys=result_keys)
 
 settings = { 'static_path' : './static/' }
