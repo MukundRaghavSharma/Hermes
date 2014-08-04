@@ -1,0 +1,6 @@
+TODO
+====
+1. Successful rendering of top trading symbols
+2. Restructuring API on the basis of instrument 
+3. Capability of querying all symbols with all attributes
+4. Adding specific attributes for searches
