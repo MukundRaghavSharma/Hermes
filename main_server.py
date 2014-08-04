@@ -1,30 +1,39 @@
+import json
 import urllib
 from bs4 import BeautifulSoup
-from tornado.io import IOLoop
+from tornado.ioloop import IOLoop
 from tornado.web import Application, RequestHandler
 
 # Top traded symbols include: 
-# BAC, SPY, IWM, EEM, AAPL, MSFT, TLT, DXJ, NS
-# XLF, SLV, FB, QQQ, GPOR, XOP
 
 TOP_SYMBOLS = ['BAC', 'SPY', 'IWM', 'EEM','AAPL', 'MSFT', 'TLT', 'DXJ', 'NS', 'XLF', 'SLV', 'FB', 'QQQ', 'GPOR', 'XOP']
 
-class QuotesHandler(RequestHandler):
-    def get_quotes(self)
+class TopSymbolHandler(RequestHandler):
+    def get_quotes(self):
         url = 'http://finance.yahoo.com/d/quotes.csv?s='
         for symbol in TOP_SYMBOLS:
             url += symbol + '+'
         url = url[:len(url) - 1]
-        url += '&f=sn'
+        url += '&f=snab'
+        raw = urllib.urlopen(url)
+        soup = BeautifulSoup(raw)
+        content = soup.findAll('body')[0].contents[0]
+        split_strings = str(content).split('\n')
+        results = {}
+        for string in split_strings:
+            s = string.split(',')
+            results[s[0]] = s[1:]
+        for key in results:
 
-    def get(self, symbol):
+
+    def get(self):
         results = self.get_quotes()
-
+        self.render('search.html', results=results)
 
 settings = { 'static_path' : './static/' }
 
-application([
-    ('/(.*)', QuotesHandler)
+application = Application([
+    ('/top_symbols/', TopSymbolHandler)
     ], **settings)
 
 if __name__ == '__main__':
