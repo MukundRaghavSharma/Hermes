@@ -8,6 +8,9 @@ from tornado.web import Application, RequestHandler
 
 TOP_SYMBOLS = ['BAC', 'SPY', 'IWM', 'EEM','AAPL', 'MSFT', 'TLT', 'DXJ', 'NS', 'XLF', 'SLV', 'FB', 'QQQ', 'GPOR', 'XOP']
 
+DICTIONARY_LIST = ['Name', 'Bid', 'Ask']
+
+
 class TopSymbolService:
     def get_quotes(self):
         url = 'http://finance.yahoo.com/d/quotes.csv?s='
@@ -22,16 +25,22 @@ class TopSymbolService:
         results = {}
         for string in split_strings:
             s = string.split(',')
-            results[s[0]] = s[1:]
-        print json.dumps(results)
-        return json.dumps(results)   
+            print len(s)
+            if len(s) == 4 or len(s) == 5:
+                individual_results = {}
+                individual_results['Name'] = s[1]
+                print s[1]
+                individual_results['Ask'] = s[2]
+                individual_results['Bid'] = s[3]
+                results[s[0]] = individual_results
+        return results
 
 class TopSymbolHandler(RequestHandler):
     service = TopSymbolService()
     
     def get(self):
         results = self.service.get_quotes()
-        self.render('index.html', result_keys=result_keys)
+        self.write(results)
 
 settings = { 'static_path' : './static/' }
 
