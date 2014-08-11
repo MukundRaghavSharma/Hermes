@@ -1,41 +1,39 @@
-
 <!DOCTYPE html>
 <html>
     <head>
         <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.3.min.js"></script>
-        <script src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>    
-        <!--link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/-->
+        <script src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+        <link rel="icon" href="{{ static_url('pics/favicon.ico') }}" type="image/x-icon"/>
+        <!--link rel="shortcut icon" href="{{ static_url('pics/favicon.ico') }}" type="image/x-icon"/  add own icon-- >
         <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css" />
-        <link rel="stylesheet" href="{{ static_url('stylesheet.css') }}" />
-        <meta http-equiv="refresh" content="5" />
+        <script src="https://cdn.firebase.com/js/simple-login/1.6.1/firebase-simple-login.js"></script>
+        <!--link rel="stylesheet" href="{{ static_url('stylesheet.css') }}" / link to the custom css-->
         <script>
             $(document).ready(function(){
                 $('#table').dataTable();
             });
         </script>
-        <title id="title">
-            Top Symbols
+        <title>
+            Hermes
         </title>
     </head>
     <body id="body">
-        <h3 id="h3"> Top Symbols </h3>
-        <table id="table" border="1px solid black" style="font-family:Times, Ubuntu">
+        <h2> Hermes </h2>
+        <table border="1px solid black" >
             <thead>
-                <tr id="tr">
-                    <td> <strong> Symbol </strong></td>  
-                    <td> <strong> Name </strong></td>
+                <tr>
+                    <td colspan="1"> <strong> Symbol </strong></td>   
                     <td> <strong> Bid </strong></td>  
                     <td > <strong> Ask </strong></td>  
                 </tr>    
             </thead>
-            <tbody id="tbody">    
+            <tbody>    
                 {% if results %}
                 {% for result in results %} 
                 <tr>
-                    <td>{{ result[0] }}</td> 
-                    <td>{{ result[1].replace('"', '') }}</td> 
-                    <td>{{ result[2] }}</td> 
-                    <td>{{ result[3] }}</td> 
+                    <td>{{ String(result[0]) }}</td>
+                    <td>{{ String(result[1]) }}</td> 
+                    <td>{{ String(result[2]) }}</td> 
                 </tr>
                 {% end %}
                 {% else %}

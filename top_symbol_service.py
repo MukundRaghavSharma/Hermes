@@ -10,9 +10,8 @@ TOP_SYMBOLS = ['BAC', 'SPY', 'IWM', 'EEM','AAPL', 'MSFT', 'TLT', 'DXJ', 'NS', 'X
 
 DICTIONARY_LIST = ['Name', 'Bid', 'Ask']
 
-
 class TopSymbolService:
-    def get_quotes(self):
+    def __extract_data(self):
         url = 'http://finance.yahoo.com/d/quotes.csv?s='
         for symbol in TOP_SYMBOLS:
             url += symbol + '+'
@@ -20,29 +19,40 @@ class TopSymbolService:
         url += '&f=snab'
         raw = urllib.urlopen(url)
         soup = BeautifulSoup(raw)
+        return soup 
+    
+    def get_quotes(self):
+        soup = self.__extract_data()
         content = soup.findAll('body')[0].contents[0]
         split_strings = str(content).split('\n')
-        results = {}
+        results_list = []
         for string in split_strings:
             s = string.split(',')
-            print len(s)
-            if len(s) == 4 or len(s) == 5:
-                individual_results = {}
-                individual_results['Name'] = s[1]
-                print s[1]
-                individual_results['Ask'] = s[2]
-                individual_results['Bid'] = s[3]
-                results[s[0]] = individual_results
-        return results
+            if len(s) == 4:# or len(s) == 5:
+                individual_list = []
+                individual_list.append(s[0].replace('"',''))
+                for a in s[1:]:
+                    individual_list.append(a)
+                results_list.append(individual_list) 
+        return results_list
 
 class TopSymbolHandler(RequestHandler):
     service = TopSymbolService()
     
     def get(self):
         results = self.service.get_quotes()
-        self.write(results)
+        self.render('front_end/index.html', results = results)
 
-settings = { 'static_path' : './static/' }
+class HistoricalService(RequestHandler):
+    def __extract_data(self, Symbol):
+        url = 'http://ichart.yahoo.com/table.csv?s=' 
+        url += Symbol
+        url += '&a=0&b=1&c=2000&g=d&ignore=.csv'
+        raw = urllib.urlopen(url)
+        soup = BeautifulSoup(raw)
+        return soup 
+    
+settings = { 'static_path' : './front_end/static/' }
 
 application = Application([
     ('/top_symbols/', TopSymbolHandler)
