@@ -1,0 +1,3 @@
+- 0.1, 26th July 2014:
+    - Added functionality for Pricing Plain Vanilla Puts and Calls
+    - Documentation behind Pricing Rationale
