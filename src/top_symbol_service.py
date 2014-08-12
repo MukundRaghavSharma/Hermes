@@ -1,10 +1,16 @@
 import json
 import datetime
 import urllib
+import os
+import sys
+
+sys.path.append('../')
+
 from bs4 import BeautifulSoup
 from tornado.ioloop import IOLoop
 from tornado.web import Application, RequestHandler
 from dictionary_parser import parse_dictionary
+
 
 # Top traded symbols include: 
 TOP_SYMBOLS = ['BAC', 'SPY', 'IWM', 'EEM','AAPL', 'MSFT', 'TLT', 'DXJ', 'NS', 'XLF', 'SLV', 'FB', 'QQQ', 'GPOR', 'XOP']
@@ -49,10 +55,10 @@ class TopSymbolHandler(RequestHandler):
     
     def get(self):
         results = self.service.get_quotes()
-        self.render('front_end/index.html', results = results)
+        self.render('../front_end/index.html', results = results)
 
     
-settings = { 'static_path' : './front_end/static/' }
+settings = { 'static_path' : '../front_end/static/' }
 
 application = Application([
     ('/topsymbols/', TopSymbolHandler),
