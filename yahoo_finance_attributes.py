@@ -30,9 +30,9 @@ attributes = {
 'Change From 200 Day Moving Average'        	:  'c3', 
 'Commission'	                                :  'm6',
 'Percent Change From 200 Day Moving Average' 	:  	'g',
-'Day’s Low'	                                	:  'm7',
+'Days Low'	                                	:  'm7',
 'Change From 50 Day Moving Average'          	:  	'h',
-'Day’s High'	                                :  'm8',
+'Days High'	                                    :  'm8',
 'Percent Change From 50 Day Moving Average'  	:  'k1',
 'Last Trade-Realtime-With Time'              	:  'm3',
 '50 Day Moving Average'                      	:  	'l',
@@ -43,15 +43,15 @@ attributes = {
 
 # Misc #
 # ----- #
-'Day’s Value Change'                            :  'w1',
+'Days Value Change'                            :  'w1',
 'Holdings Gain Percent'                         :  'g1',
-'Day’s Value Change (Realtime)'                 :  'w4',
+'Days Value Change (Realtime)'                 :  'w4',
 'Annualized Gain'                           	:  'g3',
 'Price Paid'                                	:  'p1',
 'Holdings Gain'                             	:  'g4',
-'Day’s Range'                               	:   'm', 
+'Days Range'                               	:   'm', 
 'Holdings Gain Percent (Realtime)'          	:  'g5',
-'Day’s Range (Realtime)'                    	:  'm2',
+'Days Range (Realtime)'                    	:  'm2',
 'Holdings Gain (Realtime)'                  	:  'g6',
 
 # 52 Week Pricing Symbol Info #
