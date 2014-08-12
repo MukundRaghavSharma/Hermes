@@ -4,20 +4,25 @@ import urllib
 from bs4 import BeautifulSoup
 from tornado.ioloop import IOLoop
 from tornado.web import Application, RequestHandler
+from dictionary_parser import parse_dictionary
 
 # Top traded symbols include: 
-
 TOP_SYMBOLS = ['BAC', 'SPY', 'IWM', 'EEM','AAPL', 'MSFT', 'TLT', 'DXJ', 'NS', 'XLF', 'SLV', 'FB', 'QQQ', 'GPOR', 'XOP']
 
-DICTIONARY_LIST = ['Name', 'Bid', 'Ask']
+# Attributes
+ATTRIBUTES_LIST = ['Symbol', 'Name', 'Bid-Realtime', 'Ask-Realtime' ]
 
 class TopSymbolService:
     def __extract_data(self):
         url = 'http://finance.yahoo.com/d/quotes.csv?s='
         for symbol in TOP_SYMBOLS:
             url += symbol + '+'
+        attributes_result = parse_dictionary(ATTRIBUTES_LIST)
         url = url[:len(url) - 1]
-        url += '&f=snb2b3'
+        url += '&f=' 
+        for attributes in attributes_result:
+            url += str(attributes)
+        url += '&ignore=.csv'
         raw = urllib.urlopen(url)
         soup = BeautifulSoup(raw)
         return soup 
@@ -28,13 +33,15 @@ class TopSymbolService:
         split_strings = str(content).split('\n')
         results_list = []
         for string in split_strings:
+            if len(string) < 1:
+                continue
             s = string.split(',')
-            if len(s) == 4:# or len(s) == 5:
+            if len(s) >= len(ATTRIBUTES_LIST):        
                 individual_list = []
                 individual_list.append(s[0].replace('"',''))
                 for a in s[1:]:
                     individual_list.append(a)
-                results_list.append(individual_list) 
+                results_list.append(individual_list)
         return results_list
 
 class TopSymbolHandler(RequestHandler):
@@ -44,34 +51,11 @@ class TopSymbolHandler(RequestHandler):
         results = self.service.get_quotes()
         self.render('front_end/index.html', results = results)
 
-class HistoricalService(RequestHandler):
-    def __extract_data(self, Symbol):
-        url = 'http://real-chart.yahoo.com/table.csv?s=' 
-        url += Symbol
-        now = datetime.datetime.now().date()
-        url += '&d='+ str(now.month) + '&e=' + str(now.day) + '&f=' + str(now.year)
-        url += '&g=d'
-        url += '&a=1&b=1&c=1900'
-        url += '&ignore=.csv'
-        raw = urllib.urlopen(url)
-        soup = BeautifulSoup(raw)
-        return soup
-
-    def get_data(self):
-        goog = self.__extract_data('GOOG')
-        content = goog.findAll('body').contents[0]
-        print content
-        return content 
-
-    def get(self):
-        print self.get_data()
-        self.write(self.get_data())
     
 settings = { 'static_path' : './front_end/static/' }
 
 application = Application([
     ('/topsymbols/', TopSymbolHandler),
-    ('/historical/', HistoricalService)
     ], **settings)
 
 if __name__ == '__main__':
