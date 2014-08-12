@@ -1,4 +1,5 @@
 import json
+import datetime
 import urllib
 from bs4 import BeautifulSoup
 from tornado.ioloop import IOLoop
@@ -16,7 +17,7 @@ class TopSymbolService:
         for symbol in TOP_SYMBOLS:
             url += symbol + '+'
         url = url[:len(url) - 1]
-        url += '&f=snab'
+        url += '&f=snb2b3'
         raw = urllib.urlopen(url)
         soup = BeautifulSoup(raw)
         return soup 
@@ -45,17 +46,32 @@ class TopSymbolHandler(RequestHandler):
 
 class HistoricalService(RequestHandler):
     def __extract_data(self, Symbol):
-        url = 'http://ichart.yahoo.com/table.csv?s=' 
+        url = 'http://real-chart.yahoo.com/table.csv?s=' 
         url += Symbol
-        url += '&a=0&b=1&c=2000&g=d&ignore=.csv'
+        now = datetime.datetime.now().date()
+        url += '&d='+ str(now.month) + '&e=' + str(now.day) + '&f=' + str(now.year)
+        url += '&g=d'
+        url += '&a=1&b=1&c=1900'
+        url += '&ignore=.csv'
         raw = urllib.urlopen(url)
         soup = BeautifulSoup(raw)
-        return soup 
+        return soup
+
+    def get_data(self):
+        goog = self.__extract_data('GOOG')
+        content = goog.findAll('body').contents[0]
+        print content
+        return content 
+
+    def get(self):
+        print self.get_data()
+        self.write(self.get_data())
     
 settings = { 'static_path' : './front_end/static/' }
 
 application = Application([
-    ('/top_symbols/', TopSymbolHandler)
+    ('/topsymbols/', TopSymbolHandler),
+    ('/historical/', HistoricalService)
     ], **settings)
 
 if __name__ == '__main__':
