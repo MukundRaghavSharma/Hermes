@@ -6,9 +6,8 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))  
 
 from bs4 import BeautifulSoup
-from tornado.ioloop import IOLoop
-from tornado.web import Application, RequestHandler
-from dictionary_parser import parse_dictionary
+from tornado.web import RequestHandler
+from util.dictionary_parser import parse_dictionary
 
 # Top traded symbols # 
 TOP_SYMBOLS = ['BAC', 'SPY', 'IWM', 'EEM','AAPL', 'MSFT', 'TLT', 'DXJ', 'NS', 'XLF', 'SLV', 'FB', 'QQQ', 'GPOR', 'XOP']
@@ -57,10 +56,3 @@ class TopSymbolHandler(RequestHandler):
 
 settings = { 'static_path' : 'front_end/static/' }
 
-application = Application([
-    ('/topsymbols/', TopSymbolHandler),
-    ], **settings)
-
-if __name__ == '__main__':
-    application.listen(8888)
-    IOLoop.instance().start()
