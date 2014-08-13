@@ -4,4 +4,7 @@ TODO
 2. Restructuring API on the basis of instrument 
 3. Capability of querying all symbols with all attributes
 4. Adding specific attributes for searches - DONE
-5. Restructuring code to improve code reuse
+5. Restructuring code to improve code reuse - DONE
+6. Creating Dropdown list of Symbols to Search From
+7. Adding Options and Futures information
+8. Toggle between server and services with one boolean field
