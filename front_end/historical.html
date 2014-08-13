@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.3.min.js"></script>
+        <script src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>    
+        <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" href="{{ static_url('stylesheet.css') }}" />
+        <link rel="shortcut icon" href="{{ static_url('pics/Hermes.ico') }}" type="image/x-icon"/>
+        <!--meta http-equiv="refresh" content="5" /-->
+        <script>
+            $(document).ready(function(){
+                $('#table').dataTable();
+            });
+        </script>
+        <title id="title">
+            Historical Data - {{ name }}
+        </title>
+    </head>
+    <body id="body">
+        <h3 id="h3"> Historical Data - {{ name }} </h3>
+        <table id="table" border="1px solid black" style="font-family:Times, Ubuntu">
+            <thead>
+                <tr id="tr">
+                    <td> <strong> Date </strong></td>  
+                    <td> <strong> Open </strong></td>
+                    <td> <strong> High </strong></td>  
+                    <td > <strong> Low </strong></td>  
+                    <td > <strong> Close </strong></td> 
+                    <td > <strong> Volume </strong></td> 
+                    <td > <strong> Adjusted Close </strong></td> 
+                </tr>    
+            </thead>
+            <tbody id="tbody">    
+                {% if results %}
+                {% for result in results %} 
+                <tr>
+                    <td>{{ result[0] }}</td> 
+                    <td>{{ result[1] }}</td> 
+                    <td>{{ result[2] }}</td> 
+                    <td>{{ result[3] }}</td>
+                    <td>{{ result[4] }}</td>
+                    <td>{{ result[5] }}</td>
+                    <td>{{ result[6 ] }}</td>
+                </tr>
+                {% end %}
+                {% else %}
+                <tr>
+                    <td> No results! </td>
+                </tr>
+                {% end %}
+            </tbody>
+    </table>
+    </body>
+</html>

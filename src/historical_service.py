@@ -3,44 +3,49 @@ import urllib
 import os
 import sys
 
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))  
+
 from bs4 import BeautifulSoup
 from tornado.ioloop import IOLoop
 from tornado.web import Application, RequestHandler
-from dictionary_parser import parse_dictionary
+from util.dictionary_parser import parse_dictionary
 
-SYMBOL = 'GOOG'
-
-ATTRIBUTES_LIST = ['Symbol', 'Name', 'Open',
-                   'High'  , 'Low' , 'Close', 'Volume', 'Adjusted Close']
-
-class HistoricalService(RequestHandler):
-    def __extract_data(self, Symbol):
-        url = 'http://real-chart.yahoo.com/table.csv?s=' 
-        url += SYMBOL
+class HistoricalHandler(RequestHandler):
+    def __extract_data(self, symbol):
+        url = 'http://real-chart.finance.yahoo.com/table.csv?s=' 
+        url += symbol
         now = datetime.datetime.now().date()
         url += '&d='+ str(now.month) + '&e=' + str(now.day) + '&f=' + str(now.year)
         url += '&g=d'
         url += '&a=1&b=1&c=1900'
         url += '&ignore=.csv'
-        print url
         raw = urllib.urlopen(url)
         soup = BeautifulSoup(raw)
         return soup
 
-    def get_data(self):
-        goog = self.__extract_data('GOOG')
-        content = goog.findAll('body').contents[0]
-        print content
-        return content 
+    def get_data(self, symbol):
+        goog = self.__extract_data(symbol)
+        content = goog.findAll('body')[0].contents[0]
+        split_strings = str(content).split('\n')
+        results_list = []
+        first = True
+        for string in split_strings:
+            if len(string) < 1 or first:
+                first = False
+                continue
+            s = string.split(',')
+            individual_list = []
+            individual_list.append(s[0])
+            for a in s[1:]:
+                individual_list.append(a)
+            results_list.append(individual_list)
+        return results_list
 
-    def get(self):
-        print self.get_data()
-        self.write(self.get_data())
-
-application = Application([
-    ('/historical/GOOG/', HistoricalService),
-    ])
-
-if __name__ == '__main__':
-    application.listen(8889)
-    IOLoop.instance().start()
+    def get(self, symbol):
+        url = 'http://finance.yahoo.com/d/quotes.csv?s=' + symbol + '&f=n&ignore=.csv'
+        raw = urllib.urlopen(str(url))
+        soup = BeautifulSoup(raw)
+        results = self.get_data(symbol)
+        name = soup.findAll('body')[0].contents[0]
+        name = name.replace('"', '')
+        self.render(os.path.join(os.getcwd(), 'front_end/historical.html'), results = results, name = name)
