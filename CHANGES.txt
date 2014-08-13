@@ -1,4 +1,7 @@
-- 0.1, 11th August 2014:
+- 0.1, August 2014:
     - Added the top symbols service
     - Dictionary ability
     - Refactored the code
+    - Structured code
+    - Added historical service
+    - Error Handling 
