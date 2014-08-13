@@ -25,6 +25,9 @@ class HistoricalHandler(RequestHandler):
 
     def get_data(self, symbol):
         goog = self.__extract_data(symbol)
+        check = goog.find('p', {'class':'more'})
+        if check != None and str(check.contents[0]) == 'Please try ':
+            return None
         content = goog.findAll('body')[0].contents[0]
         split_strings = str(content).split('\n')
         results_list = []
@@ -46,6 +49,9 @@ class HistoricalHandler(RequestHandler):
         raw = urllib.urlopen(str(url))
         soup = BeautifulSoup(raw)
         results = self.get_data(symbol)
-        name = soup.findAll('body')[0].contents[0]
-        name = name.replace('"', '')
-        self.render(os.path.join(os.getcwd(), 'front_end/historical.html'), results = results, name = name)
+        if results == None:
+            self.render(os.path.join(os.getcwd(), 'front_end/error.html'))
+        else:
+            name = soup.findAll('body')[0].contents[0]
+            name = name.replace('"', '')
+            self.render(os.path.join(os.getcwd(), 'front_end/historical.html'), results = results, name = name)
