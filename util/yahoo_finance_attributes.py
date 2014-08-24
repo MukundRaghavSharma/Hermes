@@ -49,15 +49,15 @@ attributes = {
 # Misc #
 # ----- #
 'Days Value Change'                            :  'w1',
-'Holdings Gain Percent'                         :  'g1',
+'Holdings Gain Percent'                        :  'g1',
 'Days Value Change (Realtime)'                 :  'w4',
-'Annualized Gain'                           	:  'g3',
-'Price Paid'                                	:  'p1',
-'Holdings Gain'                             	:  'g4',
-'Days Range'                               	:   'm', 
-'Holdings Gain Percent (Realtime)'          	:  'g5',
-'Days Range (Realtime)'                    	:  'm2',
-'Holdings Gain (Realtime)'                  	:  'g6',
+'Annualized Gain'                              :  'g3',
+'Price Paid'                                   :  'p1',
+'Holdings Gain'                                :  'g4',
+'Days Range'                               	   :   'm', 
+'Holdings Gain Percent (Realtime)'             :  'g5',
+'Days Range (Realtime)'                    	   :  'm2',
+'Holdings Gain (Realtime)'                     :  'g6',
 
 # 52 Week Pricing Symbol Info #
 # --------------------------- #
@@ -110,5 +110,5 @@ attributes = {
  'PEG Ratio'                                    :  'r5', 
  'Price / EPS Estimate Current Year'            :  'r6', 
  'Price / EPS Estimate Next Year'               :  'r7', 
- 'Short Ratio'                                  : 's7' 
+ 'Short Ratio'                                  :  's7' 
 }
