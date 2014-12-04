@@ -6,7 +6,6 @@ from src.historical_service import HistoricalHandler
 if __name__ == '__main__':
 
     settings = { 'static_path' : 'front_end/static' }
-
     application = Application([
         ('/topsymbols', TopSymbolHandler),
         (r'/historical/(.*)', HistoricalHandler),
