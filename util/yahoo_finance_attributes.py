@@ -4,7 +4,6 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 attributes = {
-
 # Pricing Dividends #
 # ----------------- #
 'Ask' 											:  'a',
@@ -96,7 +95,7 @@ attributes = {
  'Earnings per Share'                           :   'e',  
  'Low Limit'                                    :  'l3', 
  'EPS Estimate Current Year'                    :  'e7', 
- 'Holdings Value'                               :  'v1', 
+ 'Holdings Value'                               :  'v1',
  'EPS Estimate Next Year'	                    :  'e8', 
  'Holdings Value (Realtime)'                    :  'v7', 
  'EPS Estimate Next Quarter'	                :  'e9', 
